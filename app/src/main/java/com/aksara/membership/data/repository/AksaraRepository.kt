@@ -44,34 +44,6 @@ class AksaraRepository(
     // ---------- PRODUCT / KATALOG ----------
     fun observeProducts(): Flow<List<Product>> = productDao.observeAll()
 
-    /**
-     * Pastikan katalog terisi. Dipanggil saat aplikasi mulai. Jika tabel produk
-     * kosong (mis. database lama dari versi sebelumnya, atau seeding callback gagal),
-     * isi ulang dari [com.aksara.membership.data.CatalogSeed]. Aman dipanggil berkali-kali.
-     */
-    suspend fun ensureCatalogSeeded() {
-        val current = productDao.count()
-        android.util.Log.i("AksaraSeed", "ensureCatalogSeeded dipanggil, jumlah produk saat ini = $current")
-        if (current == 0) {
-            productDao.insertAll(com.aksara.membership.data.CatalogSeed.products)
-            android.util.Log.i("AksaraSeed", "Katalog diisi: ${com.aksara.membership.data.CatalogSeed.products.size} produk dimasukkan")
-        }
-    }
-
-    /**
-     * Pastikan daftar reward terisi. Dipanggil saat aplikasi mulai. Jika tabel
-     * rewards kosong (database lama / seeding callback gagal), isi ulang dari
-     * [com.aksara.membership.data.RewardSeed]. Aman dipanggil berkali-kali.
-     */
-    suspend fun ensureRewardsSeeded() {
-        val current = rewardDao.count()
-        android.util.Log.i("AksaraSeed", "ensureRewardsSeeded dipanggil, jumlah reward saat ini = $current")
-        if (current == 0) {
-            rewardDao.insertAll(com.aksara.membership.data.RewardSeed.rewards)
-            android.util.Log.i("AksaraSeed", "Reward diisi: ${com.aksara.membership.data.RewardSeed.rewards.size} reward dimasukkan")
-        }
-    }
-
     // ---------- TRANSACTION ----------
     fun observeTransactions(memberId: Long): Flow<List<Transaction>> =
         transactionDao.observeTransactions(memberId)

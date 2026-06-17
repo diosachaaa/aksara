@@ -1,7 +1,6 @@
 package com.aksara.membership.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,7 +23,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -43,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -53,7 +50,6 @@ import com.aksara.membership.ui.components.AksaraTopBar
 import com.aksara.membership.ui.viewmodel.MembershipViewModel
 import com.aksara.membership.ui.theme.IndigoPrimary
 import com.aksara.membership.util.TransactionCategory
-import com.aksara.membership.util.productImageRes
 import com.aksara.membership.util.toRupiah
 
 @Composable
@@ -116,46 +112,20 @@ fun CatalogScreen(
                 }
             }
 
-            if (products.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator(color = IndigoPrimary)
-                        Spacer(Modifier.height(12.dp))
-                        Text(
-                            "Memuat barang...",
-                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                        )
-                    }
-                }
-            } else if (shown.isEmpty()) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "Belum ada barang pada kategori ${category.label}.",
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 16.dp, top = 4.dp)
+            ) {
+                items(shown) { product ->
+                    ProductCard(
+                        product = product,
+                        qty = cart[product.id] ?: 0,
+                        onAdd = { viewModel.addToCart(product.id) },
+                        onRemove = { viewModel.decrementCart(product.id) }
                     )
-                }
-            } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 16.dp, top = 4.dp)
-                ) {
-                    items(shown) { product ->
-                        ProductCard(
-                            product = product,
-                            qty = cart[product.id] ?: 0,
-                            onAdd = { viewModel.addToCart(product.id) },
-                            onRemove = { viewModel.decrementCart(product.id) }
-                        )
-                    }
                 }
             }
         }
@@ -166,7 +136,6 @@ fun CatalogScreen(
 private fun ProductCard(product: Product, qty: Int, onAdd: () -> Unit, onRemove: () -> Unit) {
     val cover = runCatching { Color(android.graphics.Color.parseColor(product.colorHex)) }.getOrDefault(IndigoPrimary)
     val cat = TransactionCategory.fromKey(product.category)
-    val imageRes = productImageRes(product.imageKey)
 
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column {
@@ -174,15 +143,7 @@ private fun ProductCard(product: Product, qty: Int, onAdd: () -> Unit, onRemove:
                 modifier = Modifier.fillMaxWidth().height(96.dp).background(cover),
                 contentAlignment = Alignment.Center
             ) {
-                if (imageRes != null) {
-                    Image(
-                        painter = painterResource(imageRes),
-                        contentDescription = product.name,
-                        modifier = Modifier.size(64.dp)
-                    )
-                } else {
-                    Icon(cat.icon, contentDescription = null, tint = Color.White.copy(alpha = 0.9f), modifier = Modifier.size(36.dp))
-                }
+                Icon(cat.icon, contentDescription = null, tint = Color.White.copy(alpha = 0.9f), modifier = Modifier.size(36.dp))
             }
             Column(Modifier.padding(10.dp)) {
                 Text(

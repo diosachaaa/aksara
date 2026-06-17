@@ -1,7 +1,6 @@
 package com.aksara.membership.ui.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,7 +44,6 @@ import com.aksara.membership.ui.theme.IndigoPrimary
 import com.aksara.membership.ui.viewmodel.MembershipViewModel
 import com.aksara.membership.util.PointCalculator
 import com.aksara.membership.util.TransactionCategory
-import com.aksara.membership.util.productImageRes
 import com.aksara.membership.util.toRupiah
 
 @Composable
@@ -97,7 +94,6 @@ fun CartScreen(
                 items(lines) { (product, qty) ->
                     val cover = runCatching { Color(android.graphics.Color.parseColor(product.colorHex)) }.getOrDefault(IndigoPrimary)
                     val cat = TransactionCategory.fromKey(product.category)
-                    val imageRes = productImageRes(product.imageKey)
                     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(12.dp),
@@ -107,15 +103,7 @@ fun CartScreen(
                                 modifier = Modifier.size(48.dp).clip(RoundedCornerShape(10.dp)).background(cover),
                                 contentAlignment = Alignment.Center
                             ) {
-                                if (imageRes != null) {
-                                    Image(
-                                        painter = painterResource(imageRes),
-                                        contentDescription = product.name,
-                                        modifier = Modifier.size(34.dp)
-                                    )
-                                } else {
-                                    Icon(cat.icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
-                                }
+                                Icon(cat.icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(22.dp))
                             }
                             Spacer(Modifier.size(12.dp))
                             Column(Modifier.weight(1f)) {
