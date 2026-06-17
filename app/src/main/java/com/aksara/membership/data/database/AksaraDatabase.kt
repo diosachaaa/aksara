@@ -39,7 +39,7 @@ abstract class AksaraDatabase : RoomDatabase() {
                     "aksara.db"
                 )
                     .addCallback(SeedCallback())
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration(dropAllTables = true)
                     .build()
                 INSTANCE = instance
                 instance
