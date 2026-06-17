@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "transactions",
+    tableName = "redemptions",
     foreignKeys = [
         ForeignKey(
             entity = Member::class,
@@ -17,12 +17,12 @@ import androidx.room.PrimaryKey
     ],
     indices = [Index("memberId")]
 )
-data class Transaction(
+data class Redemption(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val memberId: Long,
-    val date: Long = System.currentTimeMillis(),
-    val amount: Long,
-    val pointsEarned: Int,
-    val category: String = "LAINNYA"
+    val rewardName: String,
+    val pointCost: Int,
+    val voucherCode: String,
+    val date: Long = System.currentTimeMillis()
 )

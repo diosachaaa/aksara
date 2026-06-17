@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aksara.membership.ui.navigation.AppNavGraph
@@ -18,12 +19,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AksaraTheme {
+            val app = application as AksaraApp
+            val viewModel: MembershipViewModel = viewModel(
+                factory = MembershipViewModel.Factory(app.repository)
+            )
+            val darkMode by viewModel.darkMode.collectAsState()
+
+            AksaraTheme(darkTheme = darkMode) {
                 Surface(modifier = Modifier.fillMaxSize()) {
-                    val app = application as AksaraApp
-                    val viewModel: MembershipViewModel = viewModel(
-                        factory = MembershipViewModel.Factory(app.repository)
-                    )
                     AppNavGraph(viewModel = viewModel)
                 }
             }

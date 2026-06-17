@@ -2,7 +2,7 @@ package com.aksara.membership.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Palet warna Aksara (toko buku) - nuansa indigo, emas, dan lavender
+// ---- Brand (light) ----
 val IndigoPrimary = Color(0xFF34386B)
 val IndigoDark = Color(0xFF262A52)
 val IndigoLight = Color(0xFF5A5F99)
@@ -12,7 +12,14 @@ val LavenderCard = Color(0xFFE8E4F2)
 val OnBrand = Color(0xFFFFFFFF)
 val TextDark = Color(0xFF1B1B1F)
 
-// Warna tier member
+// ---- Dark ----
+val IndigoPrimaryDarkScheme = Color(0xFFAEB3F0)
+val DarkBg = Color(0xFF131326)
+val DarkSurface = Color(0xFF1E1E38)
+val DarkCard = Color(0xFF26264A)
+val TextLight = Color(0xFFEDECF5)
+
+// ---- Tier ----
 val TierBronze = Color(0xFFB07A3C)
 val TierSilver = Color(0xFF8A8D9A)
 val TierGold = Color(0xFFC9A227)

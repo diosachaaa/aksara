@@ -13,5 +13,6 @@ data class Member(
     val phone: String,
     val status: String = "Active",
     val totalPoints: Int = 0,
+    val photoPath: String? = null,
     val joinDate: Long = System.currentTimeMillis()
 )
