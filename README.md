@@ -28,14 +28,14 @@ Perangkat Bergerak* menggunakan Android modern (Kotlin + Jetpack Compose + Room)
 
 | Komponen | Detail |
 |---|---|
-| Bahasa | Kotlin 2.0.21 |
-| UI | Jetpack Compose + Material 3 |
-| Database | Room 2.6.1 (compiler via KSP) |
+| Bahasa | Kotlin 2.2.10 |
+| UI | Jetpack Compose + Material 3 (Compose BOM 2024.12.01) |
+| Database | Room 2.8.4 (compiler via KSP 2.3.2) |
 | Arsitektur | MVVM + Repository Pattern |
 | Navigasi | Navigation Compose 2.8.5 |
 | State | StateFlow / `collectAsState` |
-| QR Code | ZXing (`com.google.zxing:core`) — dibuat lokal, tanpa internet |
-| Build | AGP 8.7.3 · JDK 17 · minSdk 24 · targetSdk/compileSdk 35 |
+| QR Code | ZXing 3.5.3 (`com.google.zxing:core`) — dibuat lokal, tanpa internet |
+| Build | AGP 9.1.1 · JDK 17 · minSdk 24 · targetSdk/compileSdk 35 |
 
 ---
 
