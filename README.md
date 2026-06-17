@@ -1,85 +1,102 @@
-# Aksara — Bookstore Membership & Loyalty App
+# Aksara - Bookstore Membership & Loyalty App
 
-Aplikasi **member digital toko buku Aksara**. Pelanggan mendaftar sebagai member,
-**berbelanja** buku/ATK/menu kafe lewat katalog, mengumpulkan poin otomatis dari
-tiap transaksi, melihat **kartu member digital + QR Code**, dan menukar poin dengan
-**reward bervoucher**.
+Aplikasi member digital untuk toko buku Aksara. Pengguna dapat mendaftar, melakukan login, melihat katalog produk, menambahkan item ke keranjang, mengumpulkan poin dari transaksi, melihat kartu member beserta QR Code, dan menukar poin untuk reward.
 
-Mini Project Evaluasi Akhir mata kuliah *Pemrograman Perangkat Bergerak* —
-Android modern (Kotlin + Jetpack Compose + Room).
+Mini project akhir mata kuliah Pemrograman Perangkat Bergerak dengan arsitektur Kotlin + Jetpack Compose + Room.
 
 ---
 
-## 📚 Daftar Isi
-1. [Teknologi](#-teknologi)
-2. [Fitur](#-fitur)
-3. [Aturan Bisnis](#-aturan-bisnis)
-4. [Struktur Project](#-struktur-project-mvvm)
-5. [Arsitektur](#-arsitektur)
-6. [Desain Database](#-desain-database)
-7. [Daftar Layar & Navigasi](#-daftar-layar--navigasi)
-8. [Cara Menjalankan](#-cara-menjalankan)
-9. [Alur Uji Coba Cepat](#-alur-uji-coba-cepat)
-10. [Catatan Teknis](#-catatan-teknis)
+## Daftar Isi
+1. [Latar Belakang](#latar-belakang)
+2. [Tujuan Aplikasi](#tujuan-aplikasi)
+3. [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+4. [Fitur Utama](#fitur-utama)
+5. [Aturan Bisnis](#aturan-bisnis)
+6. [Struktur Project](#struktur-project)
+7. [Arsitektur Aplikasi](#arsitektur-aplikasi)
+8. [Desain Database](#desain-database)
+9. [Cara Menjalankan](#cara-menjalankan)
+10. [Alur Uji Coba](#alur-uji-coba)
+11. [Catatan Teknis](#catatan-teknis)
+12. [Kesimpulan](#kesimpulan)
 
 ---
 
-## 🛠 Teknologi
+## Latar Belakang
 
-| Komponen | Versi |
+Aksara merupakan aplikasi membership digital untuk toko buku yang bertujuan membantu pelanggan mengelola pengalaman berbelanja secara lebih praktis. Aplikasi ini menyediakan fitur login, katalog produk, keranjang belanja, pengumpulan poin, kartu member digital, hingga penukaran reward.
+
+---
+
+## Tujuan Aplikasi
+
+Tujuan dari aplikasi ini adalah:
+- mempermudah pelanggan dalam melakukan pembelian dengan alur yang sederhana;
+- memberikan pengalaman loyalitas melalui sistem poin dan reward;
+- menyajikan kartu member digital yang dapat dilihat dengan cepat;
+- membantu pengguna memahami riwayat transaksi dan penukaran reward.
+
+---
+
+## Teknologi yang Digunakan
+
+| Komponen | Detail |
 |---|---|
-| Bahasa | Kotlin 2.2.10 |
-| UI | Jetpack Compose + Material 3 (Compose BOM 2024.12.01) |
-| Database | Room 2.8.4 (compiler via KSP 2.3.2) |
+| Bahasa Pemrograman | Kotlin 2.2.10 |
+| UI | Jetpack Compose + Material 3 |
+| Compose BOM | 2024.12.01 |
+| Navigation | Navigation Compose 2.8.5 |
+| Database | Room 2.8.4 (KSP 2.3.2) |
 | Arsitektur | MVVM + Repository Pattern |
-| Navigasi | Navigation Compose 2.8.5 (+ bottom navigation) |
-| State | StateFlow / `collectAsState` |
-| QR Code | ZXing 3.5.3 (`com.google.zxing:core`) — dibuat lokal, tanpa internet |
-| Build | AGP 9.1.1 · Gradle 9.3.1 · JDK 17 · minSdk 24 · target/compileSdk 35 |
+| State Management | StateFlow / collectAsState |
+| QR Code | ZXing 3.5.3 |
+| Build Tool | AGP 9.1.1, Gradle 9.3.1, JDK 17 |
+| Target SDK | compileSdk 35, targetSdk 35, minSdk 24 |
 
 ---
 
-## ✨ Fitur
+## Fitur Utama
 
-1. **Splash Screen** — branding & tombol masuk.
-2. **Login & Registrasi** — masuk dengan email; registrasi (Nama, Email, No HP)
-   dengan validasi. Email duplikat ditolak.
-3. **Home / Dashboard** — sapaan, ringkasan poin & tier, aksi cepat (Belanja,
-   Riwayat, Reward). Dilengkapi **bottom navigation** (Home · Kartu · Reward · Profil).
-4. **Katalog Belanja** — daftar produk (Buku, ATK, Kafe, Lainnya) yang bisa
-   ditambahkan ke keranjang.
-5. **Keranjang (Cart)** — atur jumlah item, lihat total, lalu **checkout**. Sistem
-   membuat transaksi (dikelompokkan per kategori) dan menambahkan poin otomatis.
-6. **Digital Membership Card** — nama, nomor member (mis. `AKS00001`), **tier dengan
-   progress bar**, total poin, dan **QR Code**.
-7. **Riwayat Transaksi** — daftar pembelian (tanggal, kategori, nominal, poin).
-8. **Rewards** — katalog hadiah; mengetuk satu reward membuka detail.
-9. **Reward Detail + Redeem** — verifikasi poin cukup, lalu **menghasilkan kode
-   voucher** (mis. `AKS-7K2P-9XQ4`).
-10. **Riwayat Penukaran** — daftar reward yang sudah ditukar beserta kode vouchernya.
-11. **Profile** — edit data member, **foto profil (avatar)** dari galeri, **toggle
-    dark mode**, dan logout.
+1. Splash Screen
+   - layar pembuka sebelum pengguna masuk ke alur aplikasi.
+2. Login dan Register
+   - pengguna dapat masuk menggunakan email dan mendaftar akun baru.
+3. Home
+   - menampilkan sapaan, ringkasan poin, tier member, serta akses cepat ke belanja, riwayat, dan reward.
+4. Katalog Belanja
+   - menampilkan produk dari kategori buku, ATK, kafe, dan lainnya.
+5. Keranjang
+   - pengguna dapat mengubah jumlah produk sebelum melakukan checkout.
+6. Riwayat Transaksi
+   - menampilkan data transaksi beserta kategori dan poin yang diperoleh.
+7. Digital Member Card
+   - menampilkan nomor member, tier, progress poin, total poin, dan QR Code.
+8. Rewards
+   - menampilkan daftar reward yang tersedia untuk ditukar.
+9. Reward Detail
+   - menampilkan detail reward dan tombol redeem jika poin mencukupi.
+10. Riwayat Penukaran
+   - menampilkan voucher yang sudah berhasil ditukar.
+11. Profile
+   - pengguna dapat mengedit data, mengganti foto profil, mengaktifkan dark mode, dan logout.
 
 ---
 
-## 📐 Aturan Bisnis
+## Aturan Bisnis
 
-**Perhitungan Poin** (`util/PointCalculator.kt`)
-```
-poin = total_belanja / 10.000   (pembulatan ke bawah)
-Contoh: Rp150.000 → 15 poin
-```
+### Perhitungan Poin
+- 1 poin diperoleh dari setiap Rp10.000 belanja.
+- Rumus yang digunakan: poin = totalBelanja / 10.000 (dibulatkan ke bawah).
 
-**Tier Keanggotaan** (`util/MemberTier.kt`) — dihitung dari total poin (computed),
-lengkap dengan progress menuju tier berikutnya:
+### Tier Member
 
 | Tier | Rentang Poin |
 |---|---|
-| Bronze | 0 – 99 |
-| Silver | 100 – 299 |
-| Gold | ≥ 300 |
+| Bronze | 0 - 99 |
+| Silver | 100 - 299 |
+| Gold | >= 300 |
 
-**Katalog Reward** (di-*seed* otomatis):
+### Reward yang Tersedia
 
 | Reward | Poin |
 |---|---|
@@ -89,158 +106,120 @@ lengkap dengan progress menuju tier berikutnya:
 | Diskon 50% Buku | 250 |
 | Merchandise Eksklusif | 400 |
 
-**Kategori Produk/Transaksi** (`util/TransactionCategory.kt`): Buku, ATK (Alat
-Tulis), Kafe, Lainnya.
+### Kategori Produk
+- BUKU
+- ATK
+- KAFE
+- LAINNYA
 
-**Kode Voucher** (`util/CodeGenerator.kt`): format `AKS-XXXX-XXXX` (acak).
-
----
-
-## 🗂 Struktur Project (MVVM)
-
-```
-com.aksara.membership                 (42 file Kotlin)
-├── AksaraApp.kt                  # Application — container dependency
-├── MainActivity.kt               # Host Compose + dark mode + NavGraph
-│
-├── data/                         # ===== LAYER DATA =====
-│   ├── entity/                   # Member, Product, Transaction, Reward, Redemption
-│   ├── dao/                      # 5 DAO (Member, Product, Transaction, Reward, Redemption)
-│   ├── database/                 # AksaraDatabase (+ seed produk & reward)
-│   └── repository/               # AksaraRepository (single source of truth)
-│
-├── ui/                           # ===== LAYER PRESENTATION =====
-│   ├── viewmodel/                # MembershipViewModel (state, cart, aksi)
-│   ├── theme/                    # Color, Type, Theme (light + dark)
-│   ├── navigation/               # Screen (rute) + AppNavGraph (alur + bottom bar)
-│   ├── components/               # AksaraBottomBar, AvatarImage, CommonComponents
-│   └── screens/                  # 12 layar
-│
-└── util/                         # ===== UTILITY =====
-    ├── PointCalculator.kt        # aturan poin
-    ├── MemberTier.kt             # tier + progress
-    ├── TransactionCategory.kt    # kategori + ikon
-    ├── CodeGenerator.kt          # kode voucher
-    ├── ImageStorage.kt           # simpan & muat foto profil
-    ├── Formatters.kt             # format Rupiah & tanggal
-    └── QrCodeGenerator.kt        # generate QR Code
-```
+### Format Voucher
+- Kode voucher yang dihasilkan memiliki format AKS-XXXX-XXXX.
 
 ---
 
-## 🔄 Arsitektur
+## Struktur Project
 
-Aliran data satu arah (MVVM):
-
-```
-   ui/screens (Compose)
-        │  event (klik, input, checkout)
-        ▼
-   MembershipViewModel  ──── StateFlow ────►  UI (reactive)
-        │   (session, keranjang, dark mode)
-        ▼
-   AksaraRepository      (satu-satunya pintu ke data)
-        │
-        ▼
-   Room Database  →  Member · Product · Transaction · Reward · Redemption DAO
-```
-
-- UI tidak pernah mengakses DAO langsung — selalu lewat ViewModel → Repository.
-- **Keranjang** disimpan in-memory di ViewModel (`Map<productId, qty>`).
-- Perubahan poin/transaksi/redemption otomatis terpancar ke UI lewat `Flow`/`StateFlow`.
-
----
-
-## 🗄 Desain Database
-
-Room versi **4**, 5 tabel.
-
-**`members`** — id, memberNumber, name, email, phone, status, totalPoints,
-`photoPath` (foto profil), joinDate.
-
-**`products`** (katalog) — id, category (BUKU/ATK/KAFE/LAINNYA), name, author, price,
-colorHex (warna sampul placeholder).
-
-**`transactions`** — id, memberId (FK→members, CASCADE), date, amount, pointsEarned,
-category.
-
-**`rewards`** — id, name, pointCost, description.
-
-**`redemptions`** — id, memberId (FK→members, CASCADE), rewardName, pointCost,
-voucherCode, date.
-
-> Saat database dibuat/dibangun ulang, tabel `rewards` & `products` otomatis diisi
-> data awal (seed) memakai SQL mentah agar selalu tersedia. Tier member tidak
-> disimpan — dihitung dari `totalPoints`.
+`	ext
+app/
+├── src/main/java/com/aksara/membership/
+│   ├── AksaraApp.kt
+│   ├── MainActivity.kt
+│   ├── data/
+│   │   ├── entity/
+│   │   ├── dao/
+│   │   ├── database/
+│   │   └── repository/
+│   ├── ui/
+│   │   ├── navigation/
+│   │   ├── screens/
+│   │   ├── components/
+│   │   └── theme/
+│   └── util/
+└── src/main/res/
+`
 
 ---
 
-## 🧭 Daftar Layar & Navigasi
+## Arsitektur Aplikasi
 
-**12 layar.** Empat di antaranya adalah **tab bottom bar**: Home, Kartu, Reward, Profil.
+Aplikasi ini menggunakan arsitektur MVVM dengan repository sebagai lapisan penghubung antara ViewModel dan Room Database.
 
-```
-Splash
-  ↓
-Login  ──►  Register
-  ↓
-┌─────────────── Bottom Bar ───────────────┐
-│  Home   ·   Kartu   ·   Reward   ·  Profil │
-└───────────────────────────────────────────┘
-   │            │            │          │
-   │            │            │          ├─ Riwayat Penukaran
-   │            │            │          └─ (toggle dark mode, edit avatar, logout)
-   │            │            └─ Reward Detail (redeem → voucher)
-   │            │               Riwayat Penukaran
-   │            └─ (QR Code + tier progress)
-   ├─ Belanja (Katalog) ─► Keranjang ─► checkout ─► kembali ke Home
-   └─ Riwayat Transaksi
-```
+`	ext
+UI (Compose)
+   ↓
+ViewModel
+   ↓
+Repository
+   ↓
+Room Database
+`
+
+Alur utama yang digunakan:
+- ViewModel mengelola state aplikasi, sesi pengguna, keranjang, dan event UI.
+- Repository menangani operasi login, register, checkout, redeem reward, dan query data.
+- Room Database menyimpan data member, transaksi, reward, redemption, dan produk.
 
 ---
 
-## ▶ Cara Menjalankan
+## Desain Database
 
-1. Buka folder project di **Android Studio** (versi yang mendukung AGP 9.x).
-2. Tunggu **Gradle Sync** selesai (butuh internet pada kali pertama).
-3. Pilih emulator / perangkat (**minSdk 24 / Android 7.0**).
-4. Klik **Run** ▶.
+Aplikasi menggunakan Room Database dengan 5 tabel utama.
 
----
+| Tabel | Fungsi |
+|---|---|
+| members | menyimpan data member, poin, foto profil, dan tanggal join |
+| products | menyimpan katalog produk |
+| transactions | menyimpan riwayat transaksi dan poin yang diperoleh |
+| rewards | menyimpan daftar reward yang tersedia |
+| redemptions | menyimpan riwayat redeem beserta kode voucher |
 
-## 🧪 Alur Uji Coba Cepat
-
-1. **Splash → Login → "Daftar di sini"** → isi data → masuk Home.
-2. **Belanja** → tambahkan beberapa produk ke keranjang → buka **Keranjang** →
-   **Bayar**. Poin bertambah otomatis (Rp10.000 = 1 poin).
-3. **Kartu** → lihat QR Code, tier, dan progress poin.
-4. **Reward** → pilih reward → **Tukar** → dapat **kode voucher** → cek di
-   **Riwayat Penukaran**.
-5. **Profil** → ganti foto, aktifkan **dark mode**, atau logout.
-
----
-
-## 🧷 Catatan Teknis
-
-- **Poin:** `total / 10.000` (Rp10.000 = 1 poin).
-- **Checkout** membuat satu transaksi per kategori belanja, lalu mengakumulasi poin.
-- **Reward & produk** diisi otomatis saat database dibuat (seed, idempotent).
-- **Kode voucher** dibuat acak per penukaran dan dicatat di tabel `redemptions`.
-- **Foto profil** disalin ke penyimpanan internal aplikasi (`ImageStorage`); pemilihan
-  gambar memakai `GetContent()` sehingga tidak butuh izin penyimpanan.
-- **Dark mode** disimpan di ViewModel (in-memory) dan diterapkan via `AksaraTheme`.
-- **QR Code** dibuat lokal via ZXing — tanpa izin internet.
-- **`amount`, `price`, `id` bertipe `Long`** (tepat untuk Rupiah tanpa desimal).
-
-> ⚠️ **Catatan build:** `AksaraDatabase` masih memakai `fallbackToDestructiveMigration()`
-> tanpa parameter, yang **deprecated sejak Room 2.7+**. Disarankan menggantinya
-> dengan `fallbackToDestructiveMigration(dropAllTables = true)` agar bebas peringatan
-> dan aman terhadap versi Room mendatang.
+Beberapa poin penting:
+- memberNumber dibuat otomatis saat registrasi.
+- totalPoints diperbarui saat checkout atau redeem reward.
+- data produk dan reward di-seed otomatis saat aplikasi pertama kali dijalankan.
+- database builder masih menggunakan fallbackToDestructiveMigration().
 
 ---
 
-## 🚀 Future Enhancement
+## Cara Menjalankan
 
-Firebase Authentication · Cloud Sync · Barcode/ISBN scanner · pencarian & filter
-katalog · statistik kategori favorit · push notification · checkout dengan metode
-pembayaran · dashboard analytics untuk pemilik.
+1. Buka project di Android Studio.
+2. Tunggu proses Gradle sync selesai.
+3. Pilih emulator atau perangkat Android dengan API 24+.
+4. Jalankan aplikasi melalui menu Run.
+5. Jika ingin melakukan build secara manual, jalankan perintah berikut:
+
+`ash
+./gradlew assembleDebug
+`
+
+---
+
+## Alur Uji Coba
+
+1. Jalankan aplikasi hingga muncul splash screen.
+2. Daftar akun baru lalu masuk ke Home.
+3. Buka katalog, tambahkan produk ke keranjang, lalu lakukan checkout.
+4. Periksa kenaikan poin yang diterima.
+5. Buka halaman Kartu untuk melihat QR Code dan progres tier member.
+6. Pilih reward, lakukan redeem, lalu cek voucher pada riwayat penukaran.
+7. Masuk ke halaman Profil untuk mengubah data atau foto profil.
+
+---
+
+## Catatan Teknis
+
+- checkout() membuat satu transaksi per kategori dan menghitung poin dari total belanja.
+- redeem() mengurangi poin pengguna dan menyimpan kode voucher ke tabel redemptions.
+- darkMode disimpan sebagai state di ViewModel.
+- Foto profil disimpan ke internal storage agar tetap tersedia setelah aplikasi ditutup.
+- QR Code dibuat secara lokal tanpa membutuhkan koneksi internet.
+- Semua data utama dipantau dengan Flow/StateFlow agar UI dapat bereaksi secara real-time.
+
+> Catatan build: pada tahap pengembangan saat ini, database masih memakai fallbackToDestructiveMigration(). Jika ingin memperbaiki warning Room di masa mendatang, disarankan untuk menggunakan fallbackToDestructiveMigration(dropAllTables = true).
+
+---
+
+## Kesimpulan
+
+Aksara merupakan aplikasi membership digital yang menggabungkan konsep belanja, loyalitas, dan reward dalam satu antarmuka yang sederhana. Dengan arsitektur MVVM, Room Database, dan Jetpack Compose, aplikasi ini mampu menyediakan pengalaman pengguna yang modern serta mudah dikembangkan lebih lanjut.
